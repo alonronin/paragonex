@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+    <style>
+        .alert { margin: 20px 0 }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Calculator</h1>
+
+    <form>
+        <input type="number" name="numbers" />
+        <select name="operator">
+        </select>
+        <input type="number" name="numbers"/>
+        <button>=</button>
+        <span class="result"></span>
+    </form>
+
+    <div class="alert alert-danger hide"></div>
+</div>
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="javascripts/jquery.restjson.js"></script>
+<script src="javascripts/jquery.serializeobject.js"></script>
+
+<script>
+    $(function(){
+        $.get('/api/operators').then(function(operators){
+            var $select = $('form select');
+            $.each(operators, function(){
+                $select.append($('<option/>').text(this[0]));
+            });
+        });
+
+        $('button').on('click', function(e){
+            e.preventDefault();
+
+            $('.alert').addClass('hide');
+
+            $.postJSON('/api/calc', $('form').serializeObject(), function(o){
+                if (o.result === null) {
+                    $('.alert').text('mmm...your inputs are not correct. try again.').removeClass('hide');
+                }
+
+                $('span').text(o.result);
+            });
+
+        });
+
+        $('input').on('focus', function(){
+            $('.alert').addClass('hide')
+        })
+    })
+</script>
+</body>
+</html>
