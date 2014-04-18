@@ -3,10 +3,12 @@ paragonex
 
 paragonex task via tikal
 
+```
 git clone
 npm install
-node bit/www
+node bin/www
+```
 
-go to localhost on port 80
+go to `http://localhost`
 
-or got to http://paragonex.herokuapp.com/
+or go to `http://paragonex.herokuapp.com/`
